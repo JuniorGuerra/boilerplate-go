@@ -5,7 +5,7 @@ type GetItem struct {
 }
 
 type NewItem struct {
-	Name     string `json:"name"`
-	LastName string `json:"last_name"`
-	Age      string `json:"age"`
+	Name     string `json:"name" validate:"required"`
+	LastName string `json:"last_name" validate:"required"`
+	Age      int    `json:"age" validate:"required"`
 }

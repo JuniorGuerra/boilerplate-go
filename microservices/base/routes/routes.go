@@ -1,7 +1,6 @@
 package routes
 
 import (
-	"github.com/JuniorGuerra/boilerplate-go/microservices/base/models"
 	"github.com/gin-gonic/gin"
 )
 
@@ -19,5 +18,4 @@ type Route struct {
 	Method  string
 	Path    string
 	Handler gin.HandlerFunc
-	Data    models.API
 }

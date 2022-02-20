@@ -14,8 +14,8 @@ type HttpErrors struct {
 }
 
 type Error struct {
-	Message lang.Message
-	Extra   Extra `json:"data,omitempty"`
+	Message lang.Message `json:"message,omitempty"`
+	Extra   Extra        `json:"data,omitempty"`
 }
 
 func HttpError(httpError HttpErrors) {

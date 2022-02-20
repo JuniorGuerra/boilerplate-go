@@ -1,12 +1,13 @@
 package lang
 
 type Message struct {
-	ID      string `json:"messageId,omitempty" lang:"langId"`
+	ID      string `json:"id,omitempty" lang:"langId"`
 	Message string `json:"message,omitempty" lang:"langId"`
 }
 
 type HttpErrors struct {
 	GeneralInternalError Message
+	JsonStructureError   Message
 }
 
 var Errors HttpErrors
@@ -16,6 +17,10 @@ func init() {
 		GeneralInternalError: Message{
 			ID:      "GENERAL INTERNAL ERROR",
 			Message: "General internal error",
+		},
+		JsonStructureError: Message{
+			ID:      "VALIDATION ERROR",
+			Message: "Validation required tag",
 		},
 	}
 }

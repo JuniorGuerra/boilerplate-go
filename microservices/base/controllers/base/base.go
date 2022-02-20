@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/http"
 
+	"github.com/JuniorGuerra/boilerplate-go/kernel"
 	"github.com/JuniorGuerra/boilerplate-go/kernel/errors"
 	"github.com/JuniorGuerra/boilerplate-go/kernel/lang"
 	"github.com/JuniorGuerra/boilerplate-go/microservices/base/pipes"
@@ -30,8 +31,16 @@ func (h Handler) NewItem(ctx *gin.Context) {
 			Status: http.StatusInternalServerError,
 			Error: errors.Error{
 				Message: lang.Errors.GeneralInternalError,
+				Extra: errors.Extra{
+					"Error": err.Error(),
+				},
 			},
 		})
+		return
+	}
+
+	err = kernel.Validator{}.JsonStructure(pipe, ctx)
+	if err != nil {
 		return
 	}
 
