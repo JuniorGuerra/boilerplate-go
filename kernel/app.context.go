@@ -13,7 +13,7 @@ type AppContext struct {
 }
 
 func (c AppContext) BindPipe(i interface{}) interface{} {
-	err := c.Bind(&i)
+	err := c.BindJSON(&i)
 	fmt.Println("AAAAAAa")
 
 	if err != nil {

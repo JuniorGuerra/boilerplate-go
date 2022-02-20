@@ -17,14 +17,16 @@ func init() {
 	}
 }
 
-type Pipe func(interface{}, *gin.Context)
+type Pipe func(ctx kernel.AppContext) interface{}
 type Guard func(*gin.Context)
 
+// func(*gin.Context)
 type API struct {
-	Pipe  Pipe
-	Guard Guard
+	Pipe    Pipe
+	Guard   Guard
+	Handler func(*gin.Context)
 }
 
-func ReadData(kernel.AppContext) interface{} {
-	return nil
+func (i *interceptorAPI) ReadData(api API) gin.HandlerFunc {
+	return api.Handler
 }
