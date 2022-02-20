@@ -4,53 +4,29 @@ import (
 	"fmt"
 
 	"github.com/gin-gonic/gin"
-	"github.com/gin-gonic/gin/binding"
 )
 
 type AppContext struct {
-	gin.Context
-	Data interface{}
 }
 
-func (c AppContext) BindPipe(i interface{}) interface{} {
-	err := c.BindJSON(&i)
-	fmt.Println("AAAAAAa")
+func (c AppContext) BindPipe(ctx gin.Context, i interface{}) error {
+	// err := ctx.ShouldBind(&i)
 
-	if err != nil {
-		return err
-	}
-	// 	if err != nil {
-	// 		errors.HTTPErrors.InternalServerError(errors.HTTPErrorConfig{
-	// 			Message: lang.Message{
-	// 				Message: err.Error(),
+	// if err != nil {
+	// 	errors.HttpError(errors.HttpErrors{
+	// 		Ctx:    ctx,
+	// 		Status: http.StatusInternalServerError,
+	// 		Error: errors.Error{
+	// 			Message: lang.Errors.GeneralInternalError,
+	// 			Extra: errors.Extra{
+	// 				"Error": err.Error(),
 	// 			},
-	// 		})
-	// 	}
+	// 		},
+	// 	})
 	// }
-	err = c.ShouldBindBodyWith(&i, binding.JSON)
-	if err != nil {
-		return err
-	}
 
-	err = c.ShouldBindBodyWith(&i, binding.XML)
-	if err != nil {
-		return err
-	}
+	ctx.ShouldBindHeader(&i)
+	fmt.Println(i)
 
-	err = c.ShouldBindHeader(&i)
-	if err != nil {
-		return err
-	}
-
-	err = c.BindQuery(&i)
-	if err != nil {
-		return err
-	}
-
-	err = c.BindWith(&i, binding.Form)
-	if err != nil {
-		return err
-	}
-
-	return i
+	return nil
 }

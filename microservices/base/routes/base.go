@@ -15,7 +15,7 @@ func init() {
 		Routes: []Route{
 			{
 				Method:  http.MethodGet,
-				Path:    "",
+				Path:    "/:id",
 				Handler: handler.GetItem,
 			},
 
@@ -23,6 +23,18 @@ func init() {
 				Method:  http.MethodPost,
 				Path:    "",
 				Handler: handler.NewItem,
+			},
+
+			{
+				Method:  http.MethodPost,
+				Path:    "/form",
+				Handler: handler.NewImageItem,
+			},
+
+			{
+				Method:  http.MethodGet,
+				Path:    "/headers",
+				Handler: handler.HeadersItem,
 			},
 		},
 	}

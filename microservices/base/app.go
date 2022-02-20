@@ -32,7 +32,7 @@ func main() {
 	for _, group := range routes.AppRouting {
 
 		for _, route := range group.Routes {
-			path := group.Prefix + "/" + route.Path
+			path := group.Prefix + route.Path
 
 			switch route.Method {
 			case http.MethodGet:

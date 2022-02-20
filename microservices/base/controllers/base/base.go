@@ -1,12 +1,9 @@
 package base
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/JuniorGuerra/boilerplate-go/kernel"
-	"github.com/JuniorGuerra/boilerplate-go/kernel/errors"
-	"github.com/JuniorGuerra/boilerplate-go/kernel/lang"
 	"github.com/JuniorGuerra/boilerplate-go/microservices/base/pipes"
 	"github.com/gin-gonic/gin"
 )
@@ -14,34 +11,52 @@ import (
 type Handler struct{}
 
 func (h Handler) GetItem(ctx *gin.Context) {
-	// var appCtx kernel.AppContext
+	var pipe pipes.GetItem
 
-	fmt.Println(ctx.Request.Body)
+	err := kernel.AppContext{}.BindPipe(*ctx, &pipe)
 
-	ctx.JSON(http.StatusOK, "Esto deberia ser un json")
+	if err != nil {
+		return
+	}
+
+	ctx.JSON(http.StatusOK, pipe)
 }
 
 func (h Handler) NewItem(ctx *gin.Context) {
 	var pipe pipes.NewItem
-	err := ctx.ShouldBindJSON(&pipe)
+
+	err := kernel.AppContext{}.BindPipe(*ctx, &pipe)
 
 	if err != nil {
-		errors.HttpError(errors.HttpErrors{
-			Ctx:    *ctx,
-			Status: http.StatusInternalServerError,
-			Error: errors.Error{
-				Message: lang.Errors.GeneralInternalError,
-				Extra: errors.Extra{
-					"Error": err.Error(),
-				},
-			},
-		})
 		return
 	}
 
-	err = kernel.Validator{}.JsonStructure(pipe, ctx)
+	ctx.JSON(http.StatusOK, pipe)
+}
+
+func (h Handler) NewImageItem(ctx *gin.Context) {
+	var pipe pipes.NewImageItem
+
+	err := kernel.AppContext{}.BindPipe(*ctx, &pipe)
+
 	if err != nil {
 		return
+	}
+
+	ctx.JSON(http.StatusOK, pipe.Name)
+}
+
+func (h Handler) HeadersItem(ctx *gin.Context) {
+	var pipe pipes.HeadersItem
+
+	err := kernel.AppContext{}.BindPipe(*ctx, pipe)
+
+	if err != nil {
+		return
+	}
+
+	if err = ctx.ShouldBindHeader(&pipe); err != nil {
+		ctx.JSON(200, err)
 	}
 
 	ctx.JSON(http.StatusOK, pipe)
